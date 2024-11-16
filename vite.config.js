@@ -1,7 +1,5 @@
-import { defineConfig } from "vite"
+import { defineConfig } from 'vite'
 
-// vite.config.js
-export default defineConfig ({
-    // config options
-    base: "/addicted-societies"
-  })
+export default defineConfig({
+  base: '/addicted-societies/', // replace with your repository name
+})
