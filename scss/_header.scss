@@ -1,0 +1,29 @@
+@use 'abstracts' as *;
+@use 'base' as *;
+
+.header {
+    position: fixed;
+    height: var(--header-height);
+    top: 0;
+    right: 0;
+    left: 0;
+    background-color: transparent;
+    z-index: var(--z-index-header);
+    transition: all 0.3s ease;
+    mix-blend-mode: difference;
+    pointer-events: none;
+
+    .page-is-scrolled & {
+        // background-color: var(--color-light-grey);
+    }
+
+    &__container {
+        @extend %CONTAINER;
+
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+}
