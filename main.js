@@ -21,7 +21,7 @@ document.querySelector('#app').innerHTML = `
     </dialog>
 `
 const init = () => {
-    // get updated data
+    // Fetch Data every 5seconds from gist data.json
     async function fetchData() {
         try {
             const response = await fetch('https://gist.githubusercontent.com/miss-haupt/948cbe03427d0077721db6ce6899a18f/raw/data.json');
@@ -42,7 +42,13 @@ const init = () => {
         });
     }
 
-    window.onload = fetchData;
+    // Run fetchData every 5 seconds
+    function startPolling() {
+        fetchData(); // Fetch data initially right away
+        setInterval(fetchData, 5000); // Fetch data every 5000 ms (5 seconds)
+    }
+
+    window.onload = startPolling;
 }
 
 window.addEventListener('DOMContentLoaded', () => {
