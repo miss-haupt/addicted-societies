@@ -16,12 +16,21 @@ const init = () => {
     // Get backend data
     async function getBackendData() {
         try {
-            const response = await fetch('http://localhost:4000/api/test');
+            const response = await fetch('https://addicted-societies.onrender.com/api/test');
             const data = await response.json();
             console.log('Response from backend:', data);
+            visualizeBackendData(data);
         } catch (error) {
             console.error('Error fetching backend data:', error);
         }
+    }
+
+    function visualizeBackendData(data) {
+        // You can add the backend data to the visualization here
+        const container = document.getElementById('data-visualization');
+        const p = document.createElement('p');
+        p.textContent = `Backend Data: ${JSON.stringify(data)}`; // Just showing backend data as a test
+        container.appendChild(p);
     }
     
     // Call this function to check if the backend connection works

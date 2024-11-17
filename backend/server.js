@@ -18,5 +18,5 @@ app.get('/api/test', (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-    console.log(`Backend server running at http://localhost:${PORT}`);
+    console.log(`Backend server running at https://addicted-societies.onrender.com`);
 });
