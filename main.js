@@ -13,6 +13,21 @@ document.querySelector('#app').innerHTML = `
     </dialog>
 `
 const init = () => {
+    // Get backend data
+    async function getBackendData() {
+        try {
+            const response = await fetch('http://localhost:4000/api/test');
+            const data = await response.json();
+            console.log('Response from backend:', data);
+        } catch (error) {
+            console.error('Error fetching backend data:', error);
+        }
+    }
+    
+    // Call this function to check if the backend connection works
+    getBackendData();    
+
+
     // Fetch Data every 5seconds from gist data.json
     async function fetchData() {
         try {
