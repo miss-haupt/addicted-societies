@@ -1,11 +1,5 @@
 import './scss/style.scss'
 
-// import UpdateJSON from './js/updateJSON';
-
-// ASSETS
-import imgAboutMe from './assets/images/about-me-default-edited.jpg';
-import imgAboutMeColored from './assets/images/about-me-colored.jpg';
-
 document.querySelector('#app').innerHTML = `
     <div id="data-visualization"></div>
     <canvas></canvas>
