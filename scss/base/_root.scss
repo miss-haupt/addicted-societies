@@ -13,26 +13,12 @@ html {
 }
 
 body {
-    background: var(--color-black);
-    color: var(--color-text-default);
     overflow-x: clip;    
-    font-family: var(--font-base);
-    font-weight: var(--weight-light);
-    font-size: var(--font-size-default);
-    line-height: var(--line-height-default);
     font-style: normal;
     min-height: 100vh;
-
-    &.fullscreen {
-        overflow: hidden;
-    }
-}
-
-:target {
-    scroll-margin-top: calc(var(--header-height) + 20px); /* Offset for the fixed header */
 }
 
 ::selection {
-    background: var(--color-black);
-    color: var(--color-white);
+    background: #000;
+    color: #fff;
 }
