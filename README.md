@@ -1,3 +1,3 @@
 # addicted-societies
 
-After cloning start the project with `yarn dev`
+backend for realtime x and y from arduino nano esp32 with 
