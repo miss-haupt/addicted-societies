@@ -1,5 +1,11 @@
+import io from 'socket.io-client';
+
 document.querySelector('#app').innerHTML = `
     <div id="data-visualization"></div>
+    <div id="output">
+        <p>X: <span id="xVal">0</span></p>
+        <p>Y: <span id="yVal">0</span></p>
+    </div>
     <canvas></canvas>
     <dialog class="information">
         The website gets data in realtime by user taht can access worldwide and add there addiction.
@@ -13,29 +19,15 @@ document.querySelector('#app').innerHTML = `
     </dialog>
 `
 const init = () => {
-    // Get backend data
-    async function getBackendData() {
-        try {
-            const response = await fetch('https://addicted-societies.onrender.com/api/test');
-            const data = await response.json();
-            console.log('Response from backend:', data);
-            visualizeBackendData(data);
-        } catch (error) {
-            console.error('Error fetching backend data:', error);
-        }
-    }
+    const socket = io('https://addicted-societies.onrender.com/');
+    socket.on('sensorData', (data) => {
+        const [xPart, yPart] = data.split('|');
+        const xCoord = xPart.split(':')[1].trim();
+        const yCoord = yPart.split(':')[1].trim();
 
-    function visualizeBackendData(data) {
-        // You can add the backend data to the visualization here
-        const container = document.getElementById('data-visualization');
-        const p = document.createElement('p');
-        p.textContent = `Backend Data: ${JSON.stringify(data)}`; // Just showing backend data as a test
-        container.appendChild(p);
-    }
-    
-    // Call this function to check if the backend connection works
-    getBackendData();    
-
+        document.getElementById('xVal').innerText = xCoord;
+        document.getElementById('yVal').innerText = yCoord;
+    });
 
     // Fetch Data every 5seconds from gist data.json
     async function fetchData() {

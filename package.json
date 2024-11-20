@@ -17,6 +17,7 @@
   "dependencies": {
     "gsap": "^3.12.5",
     "scss-reset": "^1.4.2",
+    "socket.io-client": "^4.8.1",
     "three": "^0.164.1"
   }
 }

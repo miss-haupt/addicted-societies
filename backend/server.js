@@ -1,31 +1,31 @@
-// server.js
 require('dotenv').config();
+const SerialPort = require('serialport');
+const Readline = require('@serialport/parser-readline');
 const express = require('express');
-const cors = require('cors');
-const path = require('path'); // Import path to manage file paths
+const http = require('http');
+const socketIo = require('socket.io');
+
+const PORT = process.env.PORT || 4000; // Set server port
+
+// Create Express app and server
 const app = express();
-const PORT = process.env.PORT || 4000;
+const server = http.createServer(app);
+const io = socketIo(server);
 
-// Allow CORS for all origins
-app.use(cors());
+// Serve static files (in case you have a frontend in a public directory)
+app.use(express.static('public'));
 
-// Middleware to parse JSON request bodies
-app.use(express.json());
+// Set up SerialPort
+const port = new SerialPort('COM4', { baudRate: 115200 }); // Make sure the port matches
+const parser = port.pipe(new Readline({ delimiter: '\n' }));
 
-// Serve static files from the frontend 'dist' folder
-app.use(express.static(path.join(__dirname, '../dist'))); // Adjust the path if your frontend build is elsewhere
-
-// Example GET endpoint to test the backend
-app.get('/api/test', (req, res) => {
-    res.json({ message: 'Backend is working fine!' });
-});
-
-// Serve the index.html when the root URL is accessed
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../dist/index.html')); // Ensure the path is correct
+// On receiving serial data, emit it via socket.io
+parser.on('data', (data) => {
+  console.log('Data from Arduino:', data);
+  io.emit('sensorData', data.trim());
 });
 
 // Start server
-app.listen(PORT, () => {
-    console.log(`Backend server running at https://addicted-societies.onrender.com`);
+server.listen(PORT, () => {
+  console.log(`Server listening at https://addicted-societies.onrender.com/`);
 });
