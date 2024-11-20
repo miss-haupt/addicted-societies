@@ -1,8 +1,10 @@
-require('dotenv').config();
-const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
-const axios = require('axios');
+import dotenv from 'dotenv';
+import express from 'express';
+import http from 'http';
+import { Server as socketIo } from 'socket.io';
+import axios from 'axios';
+
+dotenv.config();
 
 // Import SerialPort, but we're going to comment out its use for now
 // const { SerialPort } = require('serialport');
@@ -14,7 +16,7 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = new socketIo(server);
 
 const cors = require('cors');
 app.use(cors());
