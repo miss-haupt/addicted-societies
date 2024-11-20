@@ -20,6 +20,13 @@ app.use(express.json());
 // Serve static files from the frontend folder
 app.use(express.static('public'));
 
+// Step 1: Add a new route to serve your `form.html` file
+app.get('/form', (req, res) => {
+    // Step 2: `__dirname` refers to the current directory where `server.js` is located.
+    //         This way, we can send the `form.html` file back to the client.
+    res.sendFile(__dirname + '/form.html');
+});
+
 // Set up SerialPort to read data from the Arduino (serial device)
 const port = new SerialPort('COM4', { baudRate: 115200 });
 const parser = port.pipe(new Readline({ delimiter: '\n' }));
