@@ -7,6 +7,10 @@ import cors from 'cors';
 
 dotenv.config();
 
+// Reconstruct `__dirname` in an ES module environment
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 // Import SerialPort, but we're going to comment out its use for now
 // const { SerialPort } = require('serialport');
 // const Readline = require('@serialport/parser-readline');
