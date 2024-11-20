@@ -12,7 +12,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-// Serve static files (in case you have a frontend in a public directory)
+// Serve static files (in case yocd ..u have a frontend in a public directory)
 app.use(express.static('public'));
 
 // Set up SerialPort
