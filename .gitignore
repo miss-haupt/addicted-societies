@@ -25,4 +25,5 @@ dist-ssr
 
 # security
 backend/.env
+.env
 
