@@ -1,5 +1,5 @@
 require('dotenv').config();
-const SerialPort = require('serialport');
+const { SerialPort } = require('serialport');
 const Readline = require('@serialport/parser-readline');
 const express = require('express');
 const http = require('http');
