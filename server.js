@@ -34,6 +34,15 @@ app.use(express.json());
 // Serve static files from the root
 app.use(express.static(__dirname + '/public'));
 
+// Add Content Security Policy Header Middleware
+app.use((req, res, next) => {
+    res.setHeader(
+      "Content-Security-Policy",
+      "default-src 'self'; script-src 'self' https://cdn.socket.io; connect-src 'self' https://cdn.socket.io"
+    );
+    return next();
+  });
+
 // Serve the `form.html` page on `/form` route
 app.get('/form', (req, res) => {
     res.sendFile(__dirname + '/form.html');
