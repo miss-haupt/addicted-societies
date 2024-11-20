@@ -1,5 +1,3 @@
-import { io } from "https://cdn.socket.io/4.3.2/socket.io.min.js";
-
 document.querySelector('#app').innerHTML = `
     <div id="data-visualization"></div>
     <div id="output">
@@ -15,7 +13,7 @@ document.querySelector('#app').innerHTML = `
 `;
 
 const init = () => {
-    const socket = io.connect('https://addicted-societies.onrender.com', { transports: ['websocket'] });
+    const socket = io.connect('https://addicted-societies.onrender.com');
 
     socket.on('connect', () => {
         console.log('Connected to backend socket');
