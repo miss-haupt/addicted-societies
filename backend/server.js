@@ -23,7 +23,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the root
-app.use(express.static('./'));
+app.use(express.static(__dirname + '/public'));
 
 // Serve the `form.html` page on `/form` route
 app.get('/form', (req, res) => {
