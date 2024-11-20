@@ -4,12 +4,15 @@ import http from 'http';
 import { Server as socketIo } from 'socket.io';
 import axios from 'axios';
 import cors from 'cors';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 dotenv.config();
 
 // Reconstruct `__dirname` in an ES module environment
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
 
 // Import SerialPort, but we're going to comment out its use for now
 // const { SerialPort } = require('serialport');
