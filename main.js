@@ -1,4 +1,4 @@
-import io from 'socket.io-client';
+import { io } from "https://cdn.socket.io/4.3.2/socket.io.min.js";
 
 document.querySelector('#app').innerHTML = `
     <div id="data-visualization"></div>
@@ -15,8 +15,12 @@ document.querySelector('#app').innerHTML = `
 `;
 
 const init = () => {
-    const socket = io('https://addicted-societies.onrender.com');
+    const socket = io.connect('https://addicted-societies.onrender.com', { transports: ['websocket'] });
 
+    socket.on('connect', () => {
+        console.log('Connected to backend socket');
+    });
+    
     // Listen for serial sensor data updates from the backend
     socket.on('sensorData', (data) => {
         console.log('Received sensor data:', data);

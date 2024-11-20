@@ -16,6 +16,9 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
+const cors = require('cors');
+app.use(cors());
+
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
