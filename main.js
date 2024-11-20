@@ -8,28 +8,35 @@ document.querySelector('#app').innerHTML = `
     </div>
     <canvas></canvas>
     <dialog class="information">
-        The website gets data in realtime by user taht can access worldwide and add there addiction.
-        It is for creating awareness for our need to always optimize ourself. this topic is set to addiction
-        in combination with tattooing it is to make the body as artwork, to highlight, my body, my choice. 
-        to reference to permanent consequences out of action and to give a voice to underground and non-elite society cultures
-        Inspired by Cronenberg's film "crimes of the future"
+        The website gets data in realtime by user that can access worldwide and add their addiction.
+        It is for creating awareness for our need to always optimize ourselves. This topic is set to addiction
+        in combination with tattooing as a form of body art, highlighting "my body, my choice" 
+        to reference permanent consequences of actions and to give a voice to underground and non-elite society cultures.
+        Inspired by Cronenberg's film "Crimes of the Future".
 
-        Technically it is build as a webapplication. While the tattomachine is the user interface, in the digital and physical world.
-        meanwhile people are creating together data and so for an artwork, also digital and physical, so they can access current events...
+        Technically, it's built as a web application. While the tattoo machine is the user interface in the digital and physical worlds,
+        people are creating data and an artwork together, both digitally and physically, connecting to current events...
     </dialog>
-`
+`;
+
 const init = () => {
     const socket = io('https://addicted-societies.onrender.com/');
+
+    // Listen for incoming sensor data from the server
     socket.on('sensorData', (data) => {
+        console.log('Received sensor data:', data);
+
+        // Extract the x and y values from the string
         const [xPart, yPart] = data.split('|');
         const xCoord = xPart.split(':')[1].trim();
         const yCoord = yPart.split(':')[1].trim();
 
+        // Update HTML to reflect the received x and y values
         document.getElementById('xVal').innerText = xCoord;
         document.getElementById('yVal').innerText = yCoord;
     });
 
-    // Fetch Data every 5seconds from gist data.json
+    // Fetch Data every 5 seconds from gist data.json
     async function fetchData() {
         try {
             const response = await fetch('https://gist.githubusercontent.com/miss-haupt/948cbe03427d0077721db6ce6899a18f/raw/data.json');
@@ -57,7 +64,7 @@ const init = () => {
     }
 
     window.onload = startPolling;
-}
+};
 
 window.addEventListener('DOMContentLoaded', () => {
     init();
