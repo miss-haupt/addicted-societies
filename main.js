@@ -29,9 +29,9 @@ const init = () => {
     });
 
     // Listen for data updates from the Gist
-    socket.on('dataUpdated', (updatedData) => {
-        console.log('Data has been updated:', updatedData);
-        visualizeData(updatedData);
+    socket.on('dataUpdated', (newData) => {
+        console.log('Data has been updated:', newData);
+        visualizeData(newData);
     });
 
     // Visualization function for displaying updated Gist data

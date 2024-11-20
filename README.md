@@ -1,9 +1,15 @@
 # addicted-societies
 
-- npm run dev for locally run
+## FED
+npm run dev
 
-## update the json file
-- https://addiction-updater-live.onrender.com/
-
-## get arduino data
+Visualization
 - https://addicted-societies.onrender.com/
+
+Submit Form
+- https://addicted-societies.onrender.com/form
+
+## Backend
+using socket.io
+get Serial Data from arduino nano esp32
+get updated JSON from form

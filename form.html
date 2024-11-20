@@ -1,0 +1,46 @@
+<!-- form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Data</title>
+</head>
+<body>
+    <h1>Update JSON Data in Gist</h1>
+    <form id="updateForm">
+        <textarea id="newData" placeholder="Enter New Data (just the text)"></textarea><br>
+        <button type="button" onclick="submitForm()">Update Gist</button>
+    </form>
+
+    <script>
+        async function submitForm() {
+            const newData = document.getElementById('newData').value;
+
+            if (newData.trim() === "") {
+                alert("Please enter some data!");
+                return;
+            }
+
+            try {
+                const response = await fetch('/update-data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ newData }),
+                });
+
+                if (response.ok) {
+                    alert('Gist updated successfully!');
+                } else {
+                    alert('Failed to update Gist');
+                }
+            } catch (error) {
+                console.error("Error updating Gist:", error);
+                alert('An error occurred.');
+            }
+        }
+    </script>
+</body>
+</html>
