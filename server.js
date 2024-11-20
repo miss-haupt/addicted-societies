@@ -3,6 +3,7 @@ import express from 'express';
 import http from 'http';
 import { Server as socketIo } from 'socket.io';
 import axios from 'axios';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -18,7 +19,6 @@ const app = express();
 const server = http.createServer(app);
 const io = new socketIo(server);
 
-const cors = require('cors');
 app.use(cors());
 
 // Middleware to parse JSON request bodies
