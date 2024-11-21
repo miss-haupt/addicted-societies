@@ -24,6 +24,8 @@ const init = () => {
         }
     }
 
+    fetchInitialData();
+
     const socket = io.connect('https://addicted-societies.onrender.com');
 
     socket.on('connect', () => {
