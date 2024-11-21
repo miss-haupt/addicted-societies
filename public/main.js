@@ -13,6 +13,17 @@ document.querySelector('#app').innerHTML = `
 `;
 
 const init = () => {
+    // Initial fetch of the Gist data on page load
+    async function fetchInitialData() {
+        try {
+            const response = await fetch('https://gist.githubusercontent.com/miss-haupt/948cbe03427d0077721db6ce6899a18f/raw/data.json');
+            const data = await response.json();
+            visualizeData(data);
+        } catch (error) {
+            console.error("Error fetching initial data:", error);
+        }
+    }
+
     const socket = io.connect('https://addicted-societies.onrender.com');
 
     socket.on('connect', () => {
@@ -39,18 +50,14 @@ const init = () => {
     // Visualization function for displaying updated Gist data
     function visualizeData(data) {
         const container = document.getElementById('data-visualization');
-        // container.innerHTML = ''; // Clear previous content
-        if (Array.isArray(data)) {
-            data.forEach((entry, index) => {
-                const p = document.createElement('p');
-                p.textContent = `Entry ${index + 1}: ${entry.message}`;
-                container.appendChild(p);
-            });
-        } else {
+        container.innerHTML = ''; // Clear previous content
+
+        // Loop through each entry in the array and display it
+        data.forEach((entry, index) => {
             const p = document.createElement('p');
-            p.textContent = `Entry: ${data}`;
+            p.textContent = `Entry ${index + 1}: ${entry.message}`;
             container.appendChild(p);
-        }
+        });
     }
 };
 

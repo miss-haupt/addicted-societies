@@ -77,6 +77,24 @@ app.post('/update-data', async (req, res) => {
     }
 
     try {
+        // Fetch existing data from Gist
+        const gistFetchUrl = `https://api.github.com/gists/${GITHUB_GIST_ID}`;
+        const fetchResponse = await axios.get(gistFetchUrl, {
+            headers: {
+                Authorization: `token ${GITHUB_TOKEN}`,
+            },
+        });
+
+        let currentContent = JSON.parse(fetchResponse.data.files['data.json'].content);
+        
+        // Ensure currentContent is an array
+        if (!Array.isArray(currentContent)) {
+            currentContent = [];
+        }
+
+        // Append the new entry to the array
+        currentContent.push({ message: newData });
+
         // Update Gist
         const gistUpdateUrl = `https://api.github.com/gists/${GITHUB_GIST_ID}`;
         const updateResponse = await axios.patch(
@@ -84,7 +102,7 @@ app.post('/update-data', async (req, res) => {
             {
                 files: {
                     'data.json': {
-                        content: JSON.stringify(newData, null, 2),
+                        content: JSON.stringify(currentContent, null, 2),
                     },
                 },
             },
@@ -98,7 +116,7 @@ app.post('/update-data', async (req, res) => {
         console.log("Gist updated successfully", updateResponse.data);
 
         // Emit new data to all clients
-        io.emit('dataUpdated', newData);
+        io.emit('dataUpdated', currentContent);
 
         return res.sendStatus(200);
     } catch (error) {
