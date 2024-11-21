@@ -40,11 +40,17 @@ const init = () => {
     function visualizeData(data) {
         const container = document.getElementById('data-visualization');
         container.innerHTML = ''; // Clear previous content
-        data.forEach((entry, index) => {
+        if (Array.isArray(data)) {
+            data.forEach((entry, index) => {
+                const p = document.createElement('p');
+                p.textContent = `Entry ${index + 1}: ${entry.message}`;
+                container.appendChild(p);
+            });
+        } else {
             const p = document.createElement('p');
-            p.textContent = `Entry ${index + 1}: ${entry.message}`;
+            p.textContent = `Entry: ${data}`;
             container.appendChild(p);
-        });
+        }
     }
 };
 
