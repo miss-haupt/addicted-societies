@@ -13,7 +13,6 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-
 // Import SerialPort, but we're going to comment out its use for now
 // const { SerialPort } = require('serialport');
 // const Readline = require('@serialport/parser-readline');
@@ -28,20 +27,23 @@ const io = new socketIo(server);
 
 app.use(cors());
 
-// Middleware to parse JSON request bodies
-app.use(express.json());
-
 // Serve static files from the root
 app.use(express.static(__dirname + '/public'));
 
-// Add Content Security Policy Header Middleware
+// CSP
 app.use((req, res, next) => {
-    res.setHeader(
-      "Content-Security-Policy",
-      "default-src 'self'; script-src 'self' https://cdn.socket.io; connect-src 'self' https://cdn.socket.io"
+    res.setHeader("Content-Security-Policy", 
+        "default-src 'self'; " +
+        "script-src 'self' https://cdn.socket.io 'unsafe-inline'; " +
+        "style-src 'self' 'unsafe-inline'; " +
+        "img-src 'self' data:; " +
+        "connect-src 'self' https://addicted-societies.onrender.com;"
     );
-    return next();
-  });
+    next();
+});
+
+// Middleware to parse JSON request bodies
+app.use(express.json());
 
 // Serve the `form.html` page on `/form` route
 app.get('/form', (req, res) => {
