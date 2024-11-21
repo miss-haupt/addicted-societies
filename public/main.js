@@ -39,7 +39,7 @@ const init = () => {
     // Visualization function for displaying updated Gist data
     function visualizeData(data) {
         const container = document.getElementById('data-visualization');
-        container.innerHTML = ''; // Clear previous content
+        // container.innerHTML = ''; // Clear previous content
         if (Array.isArray(data)) {
             data.forEach((entry, index) => {
                 const p = document.createElement('p');
