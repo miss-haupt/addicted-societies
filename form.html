@@ -12,8 +12,14 @@
         <textarea id="newData" placeholder="Enter New Data (just the text)"></textarea><br>
         <button type="button" onclick="submitForm()">Update Gist</button>
     </form>
+    <div id="message" style="display: none;"></div>
 
     <script>
+        // Set focus on the textarea when the page loads
+        window.onload = function() {
+            document.getElementById('newData').focus();
+        };
+
         async function submitForm() {
             const newData = document.getElementById('newData').value;
 
@@ -32,13 +38,29 @@
                 });
 
                 if (response.ok) {
-                    alert('Gist updated successfully!');
+                    // Clear the textarea
+                    document.getElementById('newData').value = '';
+
+                    // Display success message
+                    const messageDiv = document.getElementById('message');
+                    messageDiv.innerText = 'Data successfully updated!';
+                    messageDiv.style.display = 'block'; // Show the message
+                    messageDiv.style.color = 'green'; // Style the message as needed
+
+                    // Optional: Hide the message after 3 seconds
+                    setTimeout(() => {
+                        messageDiv.style.display = 'none';
+                    }, 3000);
                 } else {
                     alert('Failed to update Gist');
                 }
             } catch (error) {
-                console.error("Error updating Gist:", error);
-                alert('An error occurred.');
+                console.error('Error:', error);
+                // Display error message
+                const messageDiv = document.getElementById('message');
+                messageDiv.innerText = 'Failed to update data. Please try again.';
+                messageDiv.style.display = 'block'; // Show the message
+                messageDiv.style.color = 'red';
             }
         }
     </script>
