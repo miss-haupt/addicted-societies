@@ -28,8 +28,8 @@ app.use(express.static(__dirname + '/public'));
 // CSP
 app.use((req, res, next) => {
     res.setHeader("Content-Security-Policy", 
-        "default-src 'self'; " +
-        "script-src 'self' https://cdn.socket.io 'unsafe-inline'; " +
+        "default-src 'self' 'unsafe-eval'; " +
+        "script-src 'self' https://cdn.socket.io 'unsafe-eval' 'unsafe-inline'; " +
         "style-src 'self' 'unsafe-inline'; " +
         "img-src 'self' data:; " +
         "connect-src 'self' https://addicted-societies.onrender.com;"
