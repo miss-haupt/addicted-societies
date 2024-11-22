@@ -14,26 +14,26 @@ function setup() {
 
     // Socket connection confirmation
     socket.on('connect', () => {
-    console.log('Connected to backend socket');
+        console.log('Connected to backend socket');
     });
 
     // Listen for real-time sensor data
     socket.on('sensorData', (data) => {
-    console.log('Received sensor data:', data);
-    const [xPart, yPart] = data.split('|');
-    const xCoord = xPart.split(':')[1].trim();
-    const yCoord = yPart.split(':')[1].trim();
+        console.log('Received sensor data:', data);
+        const [xPart, yPart] = data.split('|');
+        const xCoord = xPart.split(':')[1].trim();
+        const yCoord = yPart.split(':')[1].trim();
 
-    document.getElementById('xVal').innerText = xCoord;
-    document.getElementById('yVal').innerText = yCoord;
+        document.getElementById('xVal').innerText = xCoord;
+        document.getElementById('yVal').innerText = yCoord;
 
-    addData(xCoord, yCoord);
+        addData(xCoord, yCoord);
     });
 
     // Listen for data updates from Gist
     socket.on('dataUpdated', (newData) => {
-    console.log('Data has been updated:', newData);
-    visualizeData(newData);
+        console.log('Data has been updated:', newData);
+        visualizeData(newData);
     });
 }
 
@@ -42,16 +42,16 @@ function draw() {
 
     // Draw the data points as a smooth line
     if (xData.length > 1) {
-    for (let i = 1; i < xData.length; i++) {
-        let x1 = map(xData[i - 1], -12, 10, 0, width);
-        let y1 = map(yData[i - 1], -3, 3, 0, height);
-        let x2 = map(xData[i], -12, 10, 0, width);
-        let y2 = map(yData[i], -3, 3, 0, height);
+        for (let i = 1; i < xData.length; i++) {
+            let x1 = map(xData[i - 1], -12, 10, 0, width);
+            let y1 = map(yData[i - 1], -3, 3, 0, height);
+            let x2 = map(xData[i], -12, 10, 0, width);
+            let y2 = map(yData[i], -3, 3, 0, height);
 
-        stroke(0);
-        strokeWeight(2);
-        line(x1, y1, x2, y2);
-    }
+            stroke(0);
+            strokeWeight(2);
+            line(x1, y1, x2, y2);
+        }
     }
 }
 
@@ -92,8 +92,8 @@ function visualizeData(data) {
 
     // Loop through each entry in the array and display it
     data.forEach((entry, index) => {
-    const p = document.createElement('p');
-    p.textContent = `Entry ${index + 1}: ${entry.message}`;
-    container.appendChild(p);
+        const p = document.createElement('p');
+        p.textContent = `Entry ${index + 1}: ${entry.message}`;
+        container.appendChild(p);
     });
 }
