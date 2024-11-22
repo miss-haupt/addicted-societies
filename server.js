@@ -29,7 +29,7 @@ app.use((req, res, next) => {
         "script-src 'self' https://cdn.socket.io 'unsafe-eval' 'unsafe-inline'; " +
         "style-src 'self' 'unsafe-inline'; " +
         "img-src 'self' data:; " +
-        "connect-src 'self' https://addicted-societies.onrender.com;"
+        "connect-src 'self' https://addicted-societies.onrender.com https://gist.githubusercontent.com/;"
     );
     next();
 });

@@ -76,11 +76,12 @@ function addData(xCoord, yCoord) {
 // Fetch initial Gist data
 async function fetchInitialData() {
     try {
-    const response = await fetch('https://gist.githubusercontent.com/miss-haupt/948cbe03427d0077721db6ce6899a18f/raw/data.json');
-    const data = await response.json();
-    visualizeData(data);
+        console.log("Attempting to fetch initial data...");
+        const response = await fetch('https://gist.githubusercontent.com/miss-haupt/948cbe03427d0077721db6ce6899a18f/raw/data.json');
+        const data = await response.json();
+        visualizeData(data);
     } catch (error) {
-    console.error("Error fetching initial data:", error);
+        console.error("Error fetching initial data:", error);
     }
 }
 
