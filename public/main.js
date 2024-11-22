@@ -1,6 +1,8 @@
 let socket;
 let xData = [];
 let yData = [];
+let angle = 25; // Initial angle for the L-system
+let branchLength = 50; // Base branch length
 
 function setup() {
     createCanvas(window.innerWidth, window.innerHeight);
@@ -38,21 +40,44 @@ function setup() {
 }
 
 function draw() {
-    background(255, 50);  // Create a fade effect to visualize movement over time
+    background(255, 50); // Fading background for movement effect
 
-    // Draw the data points as a smooth line
+    translate(width / 2, height); // Start drawing from bottom center
+    stroke(0);
+    strokeWeight(2);
+
+    // Draw the L-System branches
     if (xData.length > 1) {
-        for (let i = 1; i < xData.length; i++) {
-            let x1 = map(xData[i - 1], -12, 10, 0, width);
-            let y1 = map(yData[i - 1], -3, 3, 0, height);
-            let x2 = map(xData[i], -12, 10, 0, width);
-            let y2 = map(yData[i], -3, 3, 0, height);
+        for (let i = 0; i < xData.length; i++) {
+            let mappedAngle = map(xData[i], -12, 10, -45, 45); // Map x data to angles
+            let mappedLength = map(yData[i], -3, 3, 20, 100); // Map y data to branch lengths
+            angle = mappedAngle;
+            branchLength = mappedLength;
 
-            stroke(0);
-            strokeWeight(2);
-            line(x1, y1, x2, y2);
+            drawBranch(branchLength);
         }
     }
+}
+
+function drawBranch(len) {
+    if (len < 10) {
+        return; // Stop recursion for small branches
+    }
+
+    // Draw the main branch
+    line(0, 0, 0, -len);
+    translate(0, -len);
+
+    // Save the current drawing state
+    push();
+    rotate(radians(angle));
+    drawBranch(len * 0.7); // Draw the right branch
+    pop();
+
+    push();
+    rotate(radians(-angle));
+    drawBranch(len * 0.7); // Draw the left branch
+    pop();
 }
 
 function addData(xCoord, yCoord) {
@@ -66,10 +91,10 @@ function addData(xCoord, yCoord) {
 
     // Maintain length of 50 by removing the oldest value if array length exceeds 50
     if (xData.length > 50) {
-    xData.shift(); // Remove the first element of xData
+        xData.shift(); // Remove the first element of xData
     }
     if (yData.length > 50) {
-    yData.shift(); // Remove the first element of yData
+        yData.shift(); // Remove the first element of yData
     }
 }
 
