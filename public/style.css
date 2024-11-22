@@ -1,0 +1,22 @@
+body {
+    margin: 0;
+    max-height: 100vh;
+}
+
+.app {
+    position: relative;
+    overflow: clip;
+    height: 100vh;
+    max-height: 100vh;
+}
+
+.output {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+}
+
+.output__serial-data {
+    text-align: right;
+}
+

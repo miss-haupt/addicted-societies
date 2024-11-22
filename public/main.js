@@ -1,8 +1,10 @@
 document.querySelector('#app').innerHTML = `
-    <div id="data-visualization"></div>
-    <div id="output">
-        <p>X: <span id="xVal">0</span></p>
-        <p>Y: <span id="yVal">0</span></p>
+    <div class="output">
+        <div id="data-visualization" class="output__text-input"></div>
+        <div id="output" class="output__serial-data">
+            <p>X: <span id="xVal">0</span></p>
+            <p>Y: <span id="yVal">0</span></p>
+        </div>
     </div>
     <canvas id="canvas-traces"></canvas>
     <dialog class="information">
@@ -63,7 +65,7 @@ const init = () => {
                 yData.shift(); // Remove the first element of yData
             }
         }
-        
+
         // Add the new coordinates to the arrays while keeping their length limited to 50
         addData(xCoord, yCoord);
 
