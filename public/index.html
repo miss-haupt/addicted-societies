@@ -8,7 +8,15 @@
     <title>Addicted societies</title>
   </head>
   <body>
-    <div id="app" class="app"></div>
+    <div id="app" class="app">
+      <div class="output">
+        <div id="data-visualization" class="output__text-input"></div>
+        <div id="output" class="output__serial-data">
+            <p>X: <span id="xVal">0</span></p>
+            <p>Y: <span id="yVal">0</span></p>
+        </div>
+    </div>
+    </div>
     <script src="/p5.js"></script>
     <script src="/socket.io.min.js"></script>
     <script type="module" src="./main.js"></script>
