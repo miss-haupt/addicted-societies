@@ -7,13 +7,8 @@ import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
-// Import SerialPort and Readline
-import { SerialPort } from 'serialport';
-import { ReadlineParser } from '@serialport/parser-readline';
-
 dotenv.config();
 
-// Reconstruct `__dirname` in an ES module environment
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -50,28 +45,13 @@ app.get('/form', (req, res) => {
     res.sendFile(__dirname + '/form.html');
 });
 
-// Set up SerialPort to read data from the Arduino (serial device)
-const port = new SerialPort({
-    path: 'COM6', // Specify COM6 as the port
-    baudRate: 115200,
+// Listen for serial data from Python script
+io.on('connection', (socket) => {
+    socket.on('serialData', (data) => {
+        console.log('Serial Data received from Python:', data);
+        io.emit('sensorData', data.data);  // Emit serial data to all clients
+    });
 });
-
-// Set up Readline parser to parse data from the Arduino
-const parser = port.pipe(new ReadlineParser({ delimiter: '\n' }));
-
-// On receiving serial data, emit it via Socket.IO
-parser.on('data', (data) => {
-    console.log('Data from Arduino:', data);
-    io.emit('sensorData', data.trim()); // Emit sensor data to all clients
-});
-
-// Commented out the fake serial data
-// Simulate data with fake serial data every 2 seconds
-// setInterval(() => {
-//     const fakeData = `X: ${Math.random().toFixed(2) * 100}| Y: ${Math.random().toFixed(2) * 100}`;
-//     console.log('Mock Data:', fakeData);
-//     io.emit('sensorData', fakeData); // Emit mock sensor data to all clients
-// }, 2000); // Send mock data every 2 seconds
 
 // Endpoint for updating Gist JSON with new form data
 app.post('/update-data', async (req, res) => {
