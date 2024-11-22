@@ -22,9 +22,6 @@ const io = new socketIo(server);
 
 app.use(cors());
 
-// Serve static files from the root
-app.use(express.static(__dirname + '/public'));
-
 // CSP
 app.use((req, res, next) => {
     res.setHeader("Content-Security-Policy", 
@@ -36,6 +33,9 @@ app.use((req, res, next) => {
     );
     next();
 });
+
+// Serve static files from the root
+app.use(express.static(__dirname + '/public'));
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
