@@ -96,11 +96,3 @@ function visualizeData(data) {
     container.appendChild(p);
     });
 }
-
-const init = () => {
-    // init stuff here
-};
-
-window.addEventListener('DOMContentLoaded', () => {
-    init();
-});
