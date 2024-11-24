@@ -4,6 +4,10 @@ let yData = [];
 let angle = 25; // Initial angle for the L-system
 let branchLength = 50; // Base branch length
 
+let yaw = 0;     // Global variable for yaw
+let pitch = 0;   // Global variable for pitch
+let roll = 0;    // Global variable for roll
+
 function setup() {
     createCanvas(window.innerWidth, window.innerHeight);
     background(255);
