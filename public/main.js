@@ -16,7 +16,9 @@ function setup() {
     fetchInitialData();
 
     // Set up Socket.IO connection
-    socket = io.connect('https://addicted-societies.onrender.com');
+    socket = io.connect('https://addicted-societies.onrender.com', {
+        transports: ['websocket'], // Use WebSocket for faster communication
+    });
 
     // Socket connection confirmation
     socket.on('connect', () => {
@@ -32,7 +34,7 @@ function setup() {
         roll = data.roll || 0;
         console.log(`Yaw: ${yaw}, Pitch: ${pitch}, Roll: ${roll}`);
 
-        document.getElementById('yawVal').innerText = yaw;
+        document.getElementById('yawVal').innerText = yaw; // innerHTML = ` ${yaw}`
         document.getElementById('pitchVal').innerText = pitch;
         document.getElementById('rollVal').innerText = roll;
 
@@ -49,20 +51,26 @@ function setup() {
 function draw() {
     background(255, 50); // Fading trail effect
 
-    // Adjust mapping ranges based on your data
-    let x = map(yaw, -110, 110, 0, width);  // Adjusted for your yaw values
-    let y = map(pitch, -20, 20, 0, height); // Adjusted for your pitch values
-    let circleSize = map(roll, 0, 50, 10, 100); // Adjusted for your roll values
-
-    fill(100, 200, 255, 150);
+    fill(255, 0, 0, 150); // Red circle
     noStroke();
-    ellipse(x, y, circleSize, circleSize); // Draw a circle based on YPR data
+    ellipse(width / 2, height / 2, 50, 50); // Centered red circle for testing
+
+    // Your circle
+    let x = map(yaw, -150, 150, 0, width);
+    let y = map(pitch, -20, 20, 0, height);
+    let circleSize = map(roll, 0, 50, 10, 100);
+
+    fill(100, 200, 255, 150); // Blue circle
+    noStroke();
+    ellipse(x, y, circleSize, circleSize);
+
+    console.log(`Mapped X: ${x}, Mapped Y: ${y}, Circle Size: ${circleSize}`);
 }
 
-function addData(yaw, pitch, roll) {
-    xData.push(yaw);
-    yData.push(pitch);
-    zData.push(roll); // Add roll data to a new array
+function addData(a, b, c) {
+    xData.push(a);
+    yData.push(b);
+    zData.push(c); // Add roll data to a new array
 
     // Maintain length of 50
     if (xData.length > 50) xData.shift();
