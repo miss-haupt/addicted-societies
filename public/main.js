@@ -4,9 +4,9 @@ let yData = [];
 let angle = 25; // Initial angle for the L-system
 let branchLength = 50; // Base branch length
 
-let yaw = 0;
-let pitch = 0;
-let roll = 0;
+let yawValue = 0;
+let pitchValue = 0;
+let rollValue = 0;
 let prevX = window.innerWidth / 2;
 let prevY = window.innerHeight / 2;
 let smoothing = 0.2; // Reduced smoothing for quicker reactions
@@ -30,9 +30,9 @@ function setup() {
 
     socket.on('sensorData', (data) => {
         // Process real-time sensor data
-        yaw = constrain(data.yaw || 0, -180, 180);
-        pitch = constrain(data.pitch || 0, -90, 90);
-        roll = constrain(data.roll || 0, -45, 45);
+        yawValue = constrain(data.yaw || 0, -180, 180);
+        pitchValue = constrain(data.pitch || 0, -90, 90);
+        rollValue = constrain(data.roll || 0, -45, 45);
     });
 
     socket.on('dataUpdated', (newData) => {
@@ -44,8 +44,8 @@ function draw() {
     background(255, 30); // Fading trail effect
 
     // Map and smooth sensor values
-    let mappedX = map(yaw, -180, 180, 0, width);
-    let mappedY = map(pitch, -90, 90, 0, height);
+    let mappedX = map(yawValue, -180, 180, 0, width);
+    let mappedY = map(pitchValue, -90, 90, 0, height);
 
     let smoothedX = smoothing * mappedX + (1 - smoothing) * prevX;
     let smoothedY = smoothing * mappedY + (1 - smoothing) * prevY;
@@ -53,7 +53,7 @@ function draw() {
     prevX = smoothedX;
     prevY = smoothedY;
 
-    let circleSize = map(roll, -45, 45, 10, 100);
+    let circleSize = map(rollValue, -45, 45, 10, 100);
 
     fill(100, 200, 255, 150);
     noStroke();
