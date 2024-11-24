@@ -47,13 +47,10 @@ app.get('/form', (req, res) => {
 
 // Listen for serial data from Python script
 io.on('connection', (socket) => {
+    console.log('A client connected');
     socket.on('serialData', (data) => {
         console.log('Serial Data received from Python:', data);
-        io.emit('sensorData', {
-            yaw: data.yaw,
-            pitch: data.pitch,
-            roll: data.roll
-        });  // Emit serial data to all clients
+        io.emit('sensorData', { yaw: data.yaw, pitch: data.pitch, roll: data.roll });
     });
 });
 

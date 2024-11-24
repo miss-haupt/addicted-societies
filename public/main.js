@@ -25,7 +25,7 @@ function setup() {
 
     // Listen for real-time sensor data
     socket.on('sensorData', (data) => {
-        console.log('Serial Data received from Python:', data);
+        console.log(`Received Data from Backend: ${JSON.stringify(data)}`);
 
         yaw = data.yaw || 0;
         pitch = data.pitch || 0;
@@ -34,9 +34,9 @@ function setup() {
 
         document.getElementById('yawVal').innerText = yaw;
         document.getElementById('pitchVal').innerText = pitch;
-        document.getElementById('rollVall').innerText = roll;
+        document.getElementById('rollVal').innerText = roll;
 
-        addData(pitch, yaw, roll);
+        //addData(pitch, yaw, roll);
     });
 
     // Listen for data updates from Gist
@@ -60,26 +60,14 @@ function draw() {
 }
 
 function addData(yaw, pitch, roll) {
-    // Parse the values to floats
-    let aValue = parseFloat(yaw);
-    let bValue = parseFloat(pitch);
-    let cValue = parseFloat(roll);
+    xData.push(yaw);
+    yData.push(pitch);
+    zData.push(roll); // Add roll data to a new array
 
-    // Add new data to the arrays
-    aData.push(aValue);
-    bData.push(bValue);
-    cData.push(cValue);
-
-    // Maintain length of 50 by removing the oldest value if array length exceeds 50
-    if (aData.length > 50) {
-        aData.shift(); // Remove the first element of xData
-    }
-    if (bData.length > 50) {
-        bData.shift(); // Remove the first element of yData
-    }
-    if (cData.length > 50) {
-        cData.shift(); // Remove the first element of yData
-    }
+    // Maintain length of 50
+    if (xData.length > 50) xData.shift();
+    if (yData.length > 50) yData.shift();
+    if (zData.length > 50) zData.shift();
 }
 
 // Fetch initial Gist data
