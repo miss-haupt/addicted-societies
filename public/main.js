@@ -21,15 +21,16 @@ function setup() {
 
     // Listen for real-time sensor data
     socket.on('sensorData', (data) => {
-        console.log('Received sensor data:', data);
-        const [xPart, yPart] = data.split('|');
-        const xCoord = xPart.split(':')[1].trim();
-        const yCoord = yPart.split(':')[1].trim();
+        yaw = data.yaw;
+        pitch = data.pitch;
+        roll = data.roll;
+        console.log(`Yaw: ${yaw}, Pitch: ${pitch}, Roll: ${roll}`);
 
-        document.getElementById('xVal').innerText = xCoord;
-        document.getElementById('yVal').innerText = yCoord;
+        document.getElementById('yawVal').innerText = yaw;
+        document.getElementById('pitchVal').innerText = pitch;
+        document.getElementById('rollVall').innerText = roll;
 
-        addData(xCoord, yCoord);
+        addData(pitch, yaw, roll);
     });
 
     // Listen for data updates from Gist
@@ -40,61 +41,38 @@ function setup() {
 }
 
 function draw() {
-    background(255, 50); // Fading background for movement effect
+    background(255, 50); // Fading trail effect
 
-    translate(width / 2, height); // Start drawing from bottom center
-    stroke(0);
-    strokeWeight(2);
+    // Map yaw, pitch, roll to screen coordinates and size
+    let x = map(yaw, -180, 180, 0, width);
+    let y = map(pitch, -90, 90, 0, height);
+    let size = map(roll, -45, 45, 10, 50);
 
-    // Draw the L-System branches
-    if (xData.length > 1) {
-        for (let i = 0; i < xData.length; i++) {
-            let mappedAngle = map(xData[i], -12, 10, -45, 45); // Map x data to angles
-            let mappedLength = map(yData[i], -3, 3, 20, 100); // Map y data to branch lengths
-            angle = mappedAngle;
-            branchLength = mappedLength;
-
-            drawBranch(branchLength);
-        }
-    }
+    fill(100, 200, 255, 150);
+    noStroke();
+    ellipse(x, y, size, size); // Draw a circle based on YPR data
 }
 
-function drawBranch(len) {
-    if (len < 10) {
-        return; // Stop recursion for small branches
-    }
-
-    // Draw the main branch
-    line(0, 0, 0, -len);
-    translate(0, -len);
-
-    // Save the current drawing state
-    push();
-    rotate(radians(angle));
-    drawBranch(len * 0.7); // Draw the right branch
-    pop();
-
-    push();
-    rotate(radians(-angle));
-    drawBranch(len * 0.7); // Draw the left branch
-    pop();
-}
-
-function addData(xCoord, yCoord) {
+function addData(yaw, pitch, roll) {
     // Parse the values to floats
-    let xValue = parseFloat(xCoord);
-    let yValue = parseFloat(yCoord);
+    let aValue = parseFloat(yaw);
+    let bValue = parseFloat(pitch);
+    let cValue = parseFloat(roll);
 
     // Add new data to the arrays
-    xData.push(xValue);
-    yData.push(yValue);
+    aData.push(aValue);
+    bData.push(bValue);
+    cData.push(cValue);
 
     // Maintain length of 50 by removing the oldest value if array length exceeds 50
-    if (xData.length > 50) {
-        xData.shift(); // Remove the first element of xData
+    if (aData.length > 50) {
+        aData.shift(); // Remove the first element of xData
     }
-    if (yData.length > 50) {
-        yData.shift(); // Remove the first element of yData
+    if (bData.length > 50) {
+        bData.shift(); // Remove the first element of yData
+    }
+    if (cData.length > 50) {
+        cData.shift(); // Remove the first element of yData
     }
 }
 
