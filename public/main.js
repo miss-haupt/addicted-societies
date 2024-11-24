@@ -49,10 +49,10 @@ function setup() {
 function draw() {
     background(255, 50); // Fading trail effect
 
-    // Map yaw, pitch, roll to screen coordinates and size
-    let x = map(yaw, -180, 180, 0, width);
-    let y = map(pitch, -90, 90, 0, height);
-    let circleSize = map(roll, -45, 45, 10, 50);
+    // Adjust mapping ranges based on your data
+    let x = map(yaw, -110, 110, 0, width);  // Adjusted for your yaw values
+    let y = map(pitch, -20, 20, 0, height); // Adjusted for your pitch values
+    let circleSize = map(roll, 0, 50, 10, 100); // Adjusted for your roll values
 
     fill(100, 200, 255, 150);
     noStroke();
