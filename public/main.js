@@ -7,6 +7,9 @@ let branchLength = 50; // Base branch length
 let yaw = 0;     // Global variable for yaw
 let pitch = 0;   // Global variable for pitch
 let roll = 0;    // Global variable for roll
+let prevX = window.innerWidth / 2; // Initialize previous X position (canvas center)
+let prevY = window.innerHeight / 2; // Initialize previous Y position (canvas center)
+let smoothing = 0.5; // Smoothing factor (0 = no smoothing, 1 = fully smoothed)
 
 function setup() {
     createCanvas(window.innerWidth, window.innerHeight);
@@ -53,22 +56,34 @@ function setup() {
 }
 
 function draw() {
-    background(255, 50); // Fading trail effect
+    background(255, 30); // Fading trail effect
 
     fill(255, 0, 0, 150); // Red circle
     noStroke();
     ellipse(width / 2, height / 2, 50, 50); // Centered red circle for testing
 
-    // Your circle
-    let x = map(yaw, -180, 180, 0, width);
-    let y = map(pitch, -90, 90, 0, height);
+    // my movable circle
+    // Map sensor values to canvas coordinates
+    let mappedX = map(yaw, -180, 180, 0, width);
+    let mappedY = map(pitch, -90, 90, 0, height);
+
+    // Smooth movements (apply smoothing factor)
+    let smoothedX = smoothing * mappedX + (1 - smoothing) * prevX;
+    let smoothedY = smoothing * mappedY + (1 - smoothing) * prevY;
+
+    // Update previous positions for next frame
+    prevX = smoothedX;
+    prevY = smoothedY;
+
+    // Adjust circle size based on roll
     let circleSize = map(roll, -45, 45, 10, 100);
 
-    fill(100, 200, 255, 150); // Blue circle
+    // Draw the circle
+    fill(100, 200, 255, 150);
     noStroke();
-    ellipse(x, y, circleSize, circleSize);
+    ellipse(smoothedX, smoothedY, circleSize, circleSize);
 
-    console.log(`Mapped X: ${x}, Mapped Y: ${y}, Circle Size: ${circleSize}`);
+    console.log(`Smoothed X: ${smoothedX}, Smoothed Y: ${smoothedY}, Circle Size: ${circleSize}`);
 }
 
 function addData(a, b, c) {
