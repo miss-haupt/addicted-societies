@@ -32,6 +32,10 @@ function setup() {
         yaw = data.yaw || 0;
         pitch = data.pitch || 0;
         roll = data.roll || 0;
+        yaw = constrain(yaw, -180, 180);  // Ensure yaw stays within expected range
+        pitch = constrain(pitch, -90, 90); // Ensure pitch stays within expected range
+        roll = constrain(roll, -45, 45);   // Ensure roll stays within expected range
+
         console.log(`Yaw: ${yaw}, Pitch: ${pitch}, Roll: ${roll}`);
 
         document.getElementById('yawVal').innerText = yaw; // innerHTML = ` ${yaw}`
@@ -56,9 +60,9 @@ function draw() {
     ellipse(width / 2, height / 2, 50, 50); // Centered red circle for testing
 
     // Your circle
-    let x = map(yaw, -150, 150, 0, width);
-    let y = map(pitch, -20, 20, 0, height);
-    let circleSize = map(roll, 0, 50, 10, 100);
+    let x = map(yaw, -180, 180, 0, width);
+    let y = map(pitch, -90, 90, 0, height);
+    let circleSize = map(roll, -45, 45, 10, 100);
 
     fill(100, 200, 255, 150); // Blue circle
     noStroke();
