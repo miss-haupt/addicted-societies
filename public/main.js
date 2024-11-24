@@ -25,9 +25,11 @@ function setup() {
 
     // Listen for real-time sensor data
     socket.on('sensorData', (data) => {
-        yaw = data.yaw;
-        pitch = data.pitch;
-        roll = data.roll;
+        console.log('Serial Data received from Python:', data);
+
+        yaw = data.yaw || 0;
+        pitch = data.pitch || 0;
+        roll = data.roll || 0;
         console.log(`Yaw: ${yaw}, Pitch: ${pitch}, Roll: ${roll}`);
 
         document.getElementById('yawVal').innerText = yaw;
@@ -50,11 +52,11 @@ function draw() {
     // Map yaw, pitch, roll to screen coordinates and size
     let x = map(yaw, -180, 180, 0, width);
     let y = map(pitch, -90, 90, 0, height);
-    let size = map(roll, -45, 45, 10, 50);
+    let circleSize = map(roll, -45, 45, 10, 50);
 
     fill(100, 200, 255, 150);
     noStroke();
-    ellipse(x, y, size, size); // Draw a circle based on YPR data
+    ellipse(x, y, circleSize, circleSize); // Draw a circle based on YPR data
 }
 
 function addData(yaw, pitch, roll) {
