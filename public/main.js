@@ -1,9 +1,4 @@
 let socket;
-let xData = [];
-let yData = [];
-let angle = 25; // Initial angle for the L-system
-let branchLength = 50; // Base branch length
-
 let yawValue = 0;
 let pitchValue = 0;
 let rollValue = 0;
