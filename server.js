@@ -18,7 +18,10 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 const app = express();
 const server = http.createServer(app);
-const io = new socketIo(server);
+const io = new socketIo(server, {
+    pingInterval: 25000, // Send a ping every 25 seconds
+    pingTimeout: 60000, // Timeout if no pong received within 60 seconds
+});
 
 app.use(cors());
 

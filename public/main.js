@@ -23,6 +23,13 @@ function setup() {
         console.log('Connected to backend socket');
     });
 
+    socket.on('disconnect', () => {
+        console.warn('Socket disconnected. Attempting to reconnect...');
+        setTimeout(() => {
+            socket.connect();
+        }, 5000); // Retry after 5 seconds
+    });    
+
     socket.on('sensorData', (data) => {
         // Process real-time sensor data
         yawValue = constrain(data.yaw || 0, -180, 180);
