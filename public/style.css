@@ -1,6 +1,8 @@
 body {
     margin: 0;
     max-height: 100vh;
+
+    --spacing-to-window: 20px;
 }
 
 main {
@@ -20,5 +22,19 @@ main {
 
 .output__serial-data {
     text-align: right;
+}
+
+.output__text-input {
+    max-height: 100vh;
+    overflow: clip;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: var(--spacing-to-window);
+}
+
+.output__text-input p {
+    margin: 5px 0 0 0;
 }
 
