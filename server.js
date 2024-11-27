@@ -19,7 +19,7 @@ const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const app = express();
 const server = http.createServer(app);
 const io = new socketIo(server, {
-    pingInterval: 25000, // Send a ping every 25 seconds
+    pingInterval: 20000, // Send a ping every 25 seconds
     pingTimeout: 60000, // Timeout if no pong received within 60 seconds
 });
 
@@ -50,9 +50,9 @@ app.get('/form', (req, res) => {
 
 // Listen for serial data from Python script
 io.on('connection', (socket) => {
-    console.log('A client connected', socket.id);
+    //console.log('A client connected', socket.id);
     socket.on('serialData', (data) => {
-        console.log('Serial Data received from Python:', data);
+        //console.log('Serial Data received from Python:', data);
         io.emit('sensorData', { yaw: data.yaw, pitch: data.pitch, roll: data.roll });
     });
 });
