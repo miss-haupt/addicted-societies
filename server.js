@@ -115,5 +115,6 @@ app.post('/update-data', async (req, res) => {
 
 // Start server
 server.listen(PORT, () => {
-    console.log(`Server listening at https://addicted-societies.onrender.com`);
+    console.log(`Server listening on ws://localhost:${PORT} for WebSocket connections`);
 });
+
