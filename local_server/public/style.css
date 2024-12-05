@@ -4,9 +4,18 @@ body {
     overflow: clip;
     margin: 0;
     position: relative;
+    cursor: none;
+    font-family: 'Consolas';
 }
 
 .content {
     position: absolute;
     padding: 20px;
+}
+
+.json-input p {
+    margin: 0 0 5px;
+    font-size: 12px;
+    max-width: 250px;
+    display: flex;
 }

@@ -33,6 +33,12 @@ function setup() {
     startTime = millis();
 
     socket.on('arduinoData', (data) => {
+        socket.on('gistData', (data) => {
+            console.log('Received Gist data:', data);
+            // Do something cool with the data
+
+            visualizeData(data);
+        });
         try {
             if (data && data.yaw !== undefined && data.pitch !== undefined && data.roll !== undefined && data.aworld) {
                 yawValue = data.yaw;
@@ -95,25 +101,27 @@ function draw() {
         prevY = smoothedY;
 
         // Set circle size dynamically with smaller ranges
-        let circleSize = map(pitchValue, -45, 45, 3, 7);  // Make it tinier for precise control
+        let circleSize = map(pitchValue, -45, 45, 5, 10);  // Make it tinier for precise control
 
-        fill(222, 210, 209, 100);  // drawing for MPU60570 values
+        fill(212, 211, 210, 100);  // drawing for MPU60570 values
         noStroke();
         ellipse(smoothedX, smoothedY, circleSize, circleSize);
     }
 
-    // Drawing mouse
-    let offsetX = random(-10, 10);
-    let offsetY = random(-10, 10);
+    if (drawingActive) {
+        // Drawing mouse
+        let offsetX = random(-10, 10);
+        let offsetY = random(-10, 10);
 
-    beginShape();
-    fill(0, 0, 0, 100); 
-    for (let i = 0; i < 10; i++) {
-        let x = mouseX + offsetX * sin(i * 0.5);
-        let y = mouseY + offsetY * cos(i * 0.5);
-        vertex(x, y);
+        beginShape();
+        fill(0, 0, 0, 100); 
+        for (let i = 0; i < 10; i++) {
+            let x = mouseX + offsetX * sin(i * 0.5);
+            let y = mouseY + offsetY * cos(i * 0.5);
+            vertex(x, y);
+        }
+        endShape(CLOSE);
     }
-    endShape(CLOSE);
 }
 
 function keyPressed() {
@@ -133,4 +141,9 @@ function keyPressed() {
         yawOffset = yawValue;
         rollOffset = rollValue;
     }
+}
+
+function visualizeData(data) {
+    const container = document.getElementById('data-visualization');
+    container.innerHTML = data.map((entry, index) => `<p><span>${index + 1}:</span> ${entry.message}</p>`).join('');
 }

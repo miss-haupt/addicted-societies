@@ -7,10 +7,10 @@
     <title>Update Data</title>
 </head>
 <body>
-    <h1>Update JSON Data in Gist</h1>
+    <h1>Never regret</h1>
     <form id="updateForm">
-        <textarea id="newData" placeholder="Enter New Data (just the text)"></textarea><br>
-        <button type="button" onclick="submitForm()">Update Gist</button>
+        <textarea id="newData" placeholder="whats nect? ... Spread your tattoo instruction"></textarea><br>
+        <button type="button" onclick="submitForm()">your tattoo instruction</button>
     </form>
     <div id="message" style="display: none;"></div>
 
@@ -43,7 +43,7 @@
 
                     // Display success message
                     const messageDiv = document.getElementById('message');
-                    messageDiv.innerText = 'Data successfully updated!';
+                    messageDiv.innerText = 'Your tattoo instruction is send! :)';
                     messageDiv.style.display = 'block'; // Show the message
                     messageDiv.style.color = 'green'; // Style the message as needed
 
@@ -52,13 +52,13 @@
                         messageDiv.style.display = 'none';
                     }, 3000);
                 } else {
-                    alert('Failed to update Gist');
+                    alert('Sorry, an error occured, sth is wrong :O');
                 }
             } catch (error) {
                 console.error('Error:', error);
                 // Display error message
                 const messageDiv = document.getElementById('message');
-                messageDiv.innerText = 'Failed to update data. Please try again.';
+                messageDiv.innerText = 'Ups..  failed. Go grab a beer instead or deliver your instruction personally';
                 messageDiv.style.display = 'block'; // Show the message
                 messageDiv.style.color = 'red';
             }
