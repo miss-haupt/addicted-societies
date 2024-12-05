@@ -2,6 +2,8 @@ const express = require('express');
 const http = require('http');
 const { SerialPort, ReadlineParser } = require('serialport');
 const { Server } = require('socket.io');
+const axios = require('axios');
+require('dotenv').config(); // Load environment variables from .env file
 
 const app = express();
 app.use(require('cors')());
@@ -15,6 +17,10 @@ const serialPort = new SerialPort({
 });
 const parser = serialPort.pipe(new ReadlineParser({ delimiter: '\n' }));
 
+// Environment Variables
+const GITHUB_GIST_ID = process.env.GITHUB_GIST_ID;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+
 // Serve static files
 app.use(express.static('public'));
 
@@ -23,27 +29,43 @@ let yprData = null;
 let aworldData = null;
 let counter = 0;
 
+// Fetch Gist JSON Data
+async function fetchGistData() {
+    try {
+        const response = await axios.get(`https://api.github.com/gists/${GITHUB_GIST_ID}`, {
+            headers: {
+                Authorization: `token ${GITHUB_TOKEN}`,
+            },
+        });
+        const gistContent = JSON.parse(response.data.files['data.json'].content);
+        console.log('Fetched Gist JSON:', gistContent);
+        return gistContent;
+    } catch (error) {
+        console.error('Error fetching Gist JSON:', error.message);
+        return [];
+    }
+}
+
 // WebSocket connections
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
     console.log('Client connected:', socket.id);
+
+    // Fetch Gist data on new client connection
+    const gistData = await fetchGistData();
+    socket.emit('gistData', gistData);
 
     // Send Arduino data to clients
     parser.on('data', (data) => {
-        counter++; 
-        // Log the raw data to debug
-        // console.log('Raw data from Arduino:', data.trim());
-
-        // Try to parse both YPR and aworld data
+        counter++;
         if (data.startsWith('ypr')) {
             yprData = parseYPR(data);
         } else if (data.startsWith('aworld')) {
             aworldData = parseAworld(data);
         }
 
-        // If we have valid data for both ypr and aworld, send them together
         if (yprData && aworldData) {
             const combinedData = { ...yprData, aworld: aworldData };
-            if (counter % 10 == 0) {
+            if (counter % 10 === 0) {
                 console.log(combinedData);
             }
             socket.emit('arduinoData', combinedData);
@@ -55,36 +77,15 @@ io.on('connection', (socket) => {
     });
 });
 
+// Parse YPR Data
 function parseYPR(data) {
     try {
-        // Trim whitespace
         data = data.trim();
-
-        // Check if the data starts with "ypr"
-        if (!data.startsWith("ypr")) {
-            throw new Error("Invalid data prefix");
-        }
-
-        // Remove the "ypr" prefix and split the values
-        const cleanData = data.substring(3).trim(); // Remove "ypr" and extra spaces
-        const parts = cleanData.split(/\s+/); // Split by one or more spaces
-
-        // Ensure there are exactly 3 parts
-        if (parts.length !== 3) {
-            throw new Error("Incomplete YPR data");
-        }
-
-        // Convert parts to numbers
-        const yaw = parseFloat(parts[0]);
-        const pitch = parseFloat(parts[1]);
-        const roll = parseFloat(parts[2]);
-
-        // Validate the numbers
-        if (isNaN(yaw) || isNaN(pitch) || isNaN(roll)) {
-            throw new Error("Invalid numeric values");
-        }
-
-        // Return the parsed data
+        if (!data.startsWith('ypr')) throw new Error('Invalid data prefix');
+        const parts = data.substring(3).trim().split(/\s+/);
+        if (parts.length !== 3) throw new Error('Incomplete YPR data');
+        const [yaw, pitch, roll] = parts.map(parseFloat);
+        if (parts.some(isNaN)) throw new Error('Invalid numeric values');
         return { yaw, pitch, roll };
     } catch (error) {
         console.error(`Error parsing YPR data: ${data} - ${error.message}`);
@@ -92,36 +93,15 @@ function parseYPR(data) {
     }
 }
 
+// Parse Aworld Data
 function parseAworld(data) {
     try {
-        // Trim whitespace
         data = data.trim();
-
-        // Check if the data starts with "aworld"
-        if (!data.startsWith("aworld")) {
-            throw new Error("Invalid data prefix");
-        }
-
-        // Remove the "aworld" prefix and split the values
-        const cleanData = data.substring(6).trim(); // Remove "aworld" and extra spaces
-        const parts = cleanData.split(/\s+/); // Split by one or more spaces
-
-        // Ensure there are exactly 3 parts (x, y, z values)
-        if (parts.length !== 3) {
-            throw new Error("Incomplete aworld data");
-        }
-
-        // Convert parts to numbers
-        const x = parseFloat(parts[0]);
-        const y = parseFloat(parts[1]);
-        const z = parseFloat(parts[2]);
-
-        // Validate the numbers
-        if (isNaN(x) || isNaN(y) || isNaN(z)) {
-            throw new Error("Invalid numeric values");
-        }
-
-        // Return the parsed data
+        if (!data.startsWith('aworld')) throw new Error('Invalid data prefix');
+        const parts = data.substring(6).trim().split(/\s+/);
+        if (parts.length !== 3) throw new Error('Incomplete aworld data');
+        const [x, y, z] = parts.map(parseFloat);
+        if (parts.some(isNaN)) throw new Error('Invalid numeric values');
         return [x, y, z];
     } catch (error) {
         console.error(`Error parsing aworld data: ${data} - ${error.message}`);
