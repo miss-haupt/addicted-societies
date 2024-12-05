@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
     <title>Update Data</title>
 </head>
 <body>
     <h1>Never regret</h1>
     <form id="updateForm">
-        <textarea id="newData" placeholder="whats nect? ... Spread your tattoo instruction"></textarea><br>
-        <button type="button" onclick="submitForm()">your tattoo instruction</button>
+        <textarea id="newData" placeholder="whats next? ... Your tattoo instruction"></textarea><br>
+        <button type="button" onclick="submitForm()">share it</button>
     </form>
     <div id="message" style="display: none;"></div>
 
@@ -24,7 +25,7 @@
             const newData = document.getElementById('newData').value;
 
             if (newData.trim() === "") {
-                alert("Please enter some data!");
+                alert("Please type some text!");
                 return;
             }
 
