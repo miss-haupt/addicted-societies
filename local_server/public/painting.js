@@ -159,5 +159,5 @@ async function fetchGistData() {
 function visualizeData(data) {
     const container = document.getElementById('data-visualization');
     if (!container) return;
-    container.innerHTML = data.map((entry, index) => `<p>${index + 1}: ${entry.message}</p>`).join('');
+    container.innerHTML = data.map((entry, index) => `<p class="entry">${index + 1}: ${entry.message}</p>`).join('');
 }

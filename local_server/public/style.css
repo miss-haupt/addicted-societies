@@ -11,11 +11,27 @@ body {
 .content {
     position: absolute;
     padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 40px);
+    pointer-events: none;
 }
 
-.json-input p {
+.json-input p.entry {
     margin: 0 0 5px;
     font-size: 12px;
     max-width: 250px;
     display: flex;
+}
+
+#data-visualization {
+    max-height: calc(100vh - 145px);
+    overflow: clip;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.captcha {
+    text-align: right;
 }
