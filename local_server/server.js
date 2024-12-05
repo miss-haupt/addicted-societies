@@ -50,8 +50,9 @@ async function fetchGistData() {
 io.on('connection', async (socket) => {
     console.log('Client connected:', socket.id);
 
-    // Fetch Gist data on new client connection
+    // Fetch and send Gist data immediately upon connection
     const gistData = await fetchGistData();
+    console.log('Sending Gist data to client:', gistData);
     socket.emit('gistData', gistData);
 
     // Send Arduino data to clients
@@ -75,6 +76,29 @@ io.on('connection', async (socket) => {
     socket.on('disconnect', () => {
         console.log('Client disconnected:', socket.id);
     });
+});
+
+// Broadcast updated Gist data periodically
+const BROADCAST_INTERVAL = 10000; // Every 10 seconds
+setInterval(async () => {
+    try {
+        const gistData = await fetchGistData();
+        console.log('Broadcasting updated Gist data to all clients:', gistData);
+        io.emit('gistData', gistData); // Emit to all connected clients
+    } catch (error) {
+        console.error('Error fetching or broadcasting Gist data:', error.message);
+    }
+}, BROADCAST_INTERVAL);
+
+// REST endpoint to fetch Gist data on demand
+app.get('/api/gist-data', async (req, res) => {
+    try {
+        const gistData = await fetchGistData();
+        res.json(gistData);
+    } catch (error) {
+        console.error('Error fetching Gist data via API:', error.message);
+        res.status(500).json({ error: 'Failed to fetch Gist data' });
+    }
 });
 
 // Parse YPR Data

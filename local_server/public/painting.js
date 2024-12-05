@@ -27,18 +27,21 @@ function setup() {
     console.log('Canvas created'); // Add this for debugging
 
     socket = io();
-    console.log('Socket connection initialized'); // Add this for debugging
+    console.log('Socket connection initialized'); 
+
+    // Fetch Gist data via REST API after page reload
+    fetchGistData();
+
+    // Listen for real-time Gist updates
+    socket.on('gistData', (data) => {
+        console.log('Received updated Gist data:', data);
+        visualizeData(data);
+    });
 
     // Initialize the timer
     startTime = millis();
 
     socket.on('arduinoData', (data) => {
-        socket.on('gistData', (data) => {
-            console.log('Received Gist data:', data);
-            // Do something cool with the data
-
-            visualizeData(data);
-        });
         try {
             if (data && data.yaw !== undefined && data.pitch !== undefined && data.roll !== undefined && data.aworld) {
                 yawValue = data.yaw;
@@ -143,7 +146,18 @@ function keyPressed() {
     }
 }
 
+async function fetchGistData() {
+    try {
+        const response = await axios.get('/api/gist-data');
+        console.log('Fetched Gist data via API:', response.data);
+        visualizeData(response.data);
+    } catch (error) {
+        console.error('Error fetching Gist data:', error);
+    }
+}
+
 function visualizeData(data) {
     const container = document.getElementById('data-visualization');
-    container.innerHTML = data.map((entry, index) => `<p><span>${index + 1}:</span> ${entry.message}</p>`).join('');
+    if (!container) return;
+    container.innerHTML = data.map((entry, index) => `<p>${index + 1}: ${entry.message}</p>`).join('');
 }
